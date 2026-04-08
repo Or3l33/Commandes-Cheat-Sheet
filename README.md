@@ -77,3 +77,51 @@ Select-Object Name, @{Name="Size(GB)";Expression={[Math]::Round($_.Length / 1GB,
 > * Sous Linux, tout est fichier.
 > * Sous PowerShell, tout est objet.
 > * En cas de doute sous Linux : `man <commande>`.
+
+# 🎹 Cheat Sheet : Gestion de Musique & Serveur Orange Pi
+
+Ce guide récapitule les commandes essentielles pour synchroniser de la musique depuis Windows vers un serveur Navidrome sur Orange Pi, ainsi que la gestion des services Docker.
+
+## 🚀 Transfert de fichiers (Depuis Windows PowerShell)
+
+Utilisation de **Rclone** pour une synchronisation intelligente (évite les doublons).
+
+| Commande | Description |
+| :--- | :--- |
+| `rclone copy "D:\Music" :sftp:/home/orangepi/navidrome/music/ --sftp-host 192.168.1.53 --sftp-user orangepi --sftp-ask-password --progress --ignore-existing` | Synchronise le disque D: vers l'OPI (ignore les fichiers déjà présents). |
+| `scp -r "D:\Music\Album" orangepi@192.168.1.53:/home/orangepi/navidrome/music/` | Copie rapide d'un dossier spécifique via SSH. |
+
+## 🐳 Gestion des services Docker (Sur l'Orange Pi)
+
+| Commande | Description |
+| :--- | :--- |
+| `docker ps` | Liste les containers actifs (Navidrome, Home Assistant, etc.). |
+| `docker ps -a` | Liste tous les containers (même arrêtés). |
+| `docker logs -f <nom_container>` | Affiche les logs en temps réel (pour débugger). |
+| `docker restart <nom_container>` | Redémarre un service spécifique. |
+| `docker stats` | Affiche la consommation CPU/RAM des containers en direct. |
+
+## ⚙️ Maintenance & Système (Sur l'Orange Pi)
+
+| Commande | Description |
+| :--- | :--- |
+| `hostname -I` | Affiche toutes les adresses IP du serveur (Local, Tailscale, Docker). |
+| `df -h` | Vérifie l'espace disque restant sur la carte SD. |
+| `sudo systemctl enable docker` | Active le lancement automatique de Docker au démarrage. |
+| `sudo apt autoremove` | Nettoie les paquets système inutiles. |
+| `sudo reboot` | Redémarre proprement le serveur. |
+
+## 📂 Navigation & Nettoyage des dossiers
+
+| Commande | Description |
+| :--- | :--- |
+| `ls -lhF` | Liste les fichiers et dossiers avec détails et tailles. |
+| `tree -d -L 2` | Affiche l'arborescence des dossiers (Artistes > Albums). |
+| `fdupes -r /chemin/` | Recherche les fichiers doublons (basé sur le contenu). |
+| `fdupes -rdN /chemin/` | Supprime les doublons automatiquement en gardant un seul exemplaire. |
+| `find . -type d -empty -delete` | Supprime tous les dossiers vides après un nettoyage. |
+
+## 🌐 Accès aux Services
+- **Navidrome :** `http://192.168.1.53:4533`
+- **Home Assistant :** `http://192.168.1.53:8123`
+- **IP Tailscale (Distance) :** `100.68.96.85`

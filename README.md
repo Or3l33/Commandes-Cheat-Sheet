@@ -72,6 +72,7 @@ Select-Object -First 20 | `
 Select-Object Name, @{Name="Size(GB)";Expression={[Math]::Round($_.Length / 1GB, 2)}}, FullName
 ---
 
+
 ## 💡 Notes personnelles
 > * Sous Linux, tout est fichier.
 > * Sous PowerShell, tout est objet.

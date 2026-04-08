@@ -53,7 +53,23 @@ PowerShell fait passer des **objets** entre les commandes, pas juste du texte.
 | `Test-NetConnection -ComputerName 8.8.8.8` | Un "Ping" amélioré avec diagnostic portuaire |
 | `Get-ExecutionPolicy` | Vérifier si l'exécution de scripts est autorisée |
 | `Set-ExecutionPolicy RemoteSigned` | Autorise tes scripts locaux à s'exécuter |
+# 📂 Analyse et Nettoyage de Disque (PowerShell)
 
+Ce guide regroupe des commandes utiles pour identifier les fichiers volumineux et nettoyer l'espace disque sur Windows.
+
+> **Note :** Toutes ces commandes doivent être exécutées dans un terminal **PowerShell** en mode **Administrateur**.
+
+---
+
+## 🔍 Analyse de l'espace disque
+
+### Lister les 20 plus gros fichiers du disque
+Cette commande scanne tout le disque `C:\`, trie les fichiers par taille et affiche les 20 premiers résultats dans un tableau lisible.
+```powershell
+Get-ChildItem -Path "C:\" -Recurse -File -ErrorAction SilentlyContinue | `
+Sort-Object Length -Descending | `
+Select-Object -First 20 | `
+Select-Object Name, @{Name="Size(GB)";Expression={[Math]::Round($_.Length / 1GB, 2)}}, FullName
 ---
 
 ## 💡 Notes personnelles
